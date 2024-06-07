@@ -67,4 +67,12 @@ def write_to_file(data):
 
 
 def main():
-    cl
+    client_socket = connect_to_server()
+    authenticate(client_socket)
+    random_number = request_random_number(client_socket)
+    write_to_file(random_number)
+    client_socket.close()
+
+
+if __name__ == '__main__':
+    main()
