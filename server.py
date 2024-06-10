@@ -29,9 +29,14 @@ def handle_client(client_socket):
 
         # Wait for request for random number
         request_message = client_socket.recv(BUFFER_SIZE).decode()
-        if request_message == 'GET_RANDOM_NUMBER':
+        if request_message == 'GET_RANDOM_NUMBER_BLACKJACK':
             # Generate a random number
-            random_number = str(random.randint(1, 100))
+            random_number = str(random.randint(1, 52))
+            client_socket.sendall(random_number.encode())
+            print(f"Sent random number: {random_number}")
+        elif request_message == 'GET_RANDOM_NUMBER_ROULETTE':
+            # Generate a random number
+            random_number = str(random.randint(0, 37))
             client_socket.sendall(random_number.encode())
             print(f"Sent random number: {random_number}")
         else:

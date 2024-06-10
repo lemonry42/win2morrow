@@ -44,13 +44,21 @@ def authenticate(socket):
         sys.exit(1)
 
 
-def request_random_number(socket):
+def request_random_number(socket, argument):
     try:
         # Send request for random number
-        socket.sendall(b'GET_RANDOM_NUMBER')
-        random_number = socket.recv(BUFFER_SIZE).decode()
-        print(f"Received random number: {random_number}")
-        return random_number
+
+        if argument == "GET_RANDOM_NUMBER_BLACKJACK":
+            socket.sendall(b'GET_RANDOM_NUMBER')
+            random_number = socket.recv(BUFFER_SIZE).decode()
+            print(f"Received random number: {random_number}")
+            return random_number
+        elif argument == "GET_RANDOM_NUMBER_ROULETTE":
+            socket.sendall(b'GET_RANDOM_NUMBER_ROULETTE')
+            random_number = socket.recv(BUFFER_SIZE).decode()
+            print(f"Received random number: {random_number}")
+            return random_number
+
     except socket.error as e:
         print(f"Error while requesting random number: {e}")
         socket.close()
@@ -67,9 +75,11 @@ def write_to_file(data):
 
 
 def main():
+    argument = sys.argv[1]
+
     client_socket = connect_to_server()
     authenticate(client_socket)
-    random_number = request_random_number(client_socket)
+    random_number = request_random_number(client_socket, argument)
     write_to_file(random_number)
     client_socket.close()
 
